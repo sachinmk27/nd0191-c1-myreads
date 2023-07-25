@@ -2,8 +2,8 @@ import './App.css';
 
 import { Routes, Route } from 'react-router-dom';
 
-import MainPage from './MainPage';
-import SearchPage from './SearchPage';
+import MainPage from './containers/MainPage';
+import SearchPage from './containers/SearchPage';
 
 function App() {
   return (

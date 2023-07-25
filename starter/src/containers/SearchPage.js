@@ -1,9 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import BooksGrid from './BooksGrid';
-import * as BooksAPI from './BooksAPI';
-import Book from './Book';
-import useBooks from './useBooks';
+
+import Book from '../components/Book';
+import BooksGrid from '../components/BooksGrid';
+
+import useBooks from '../useBooks';
+
+import * as BooksAPI from '../BooksAPI';
 
 const SearchPage = () => {
   const [searchResults, setSearchResults] = useState([]);

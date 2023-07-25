@@ -1,5 +1,5 @@
 import React from 'react';
-import { SHELVES } from './constants';
+import { SHELVES } from '../constants';
 
 const BookShelfSelect = ({ onChange, book, placeholderText }) => {
   return (

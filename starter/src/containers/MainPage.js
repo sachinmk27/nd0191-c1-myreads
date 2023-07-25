@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
-import BookShelf from './BookShelf';
-import { SHELVES } from './constants';
-import BooksGrid from './BooksGrid';
-import Book from './Book';
+import BookShelf from '../components/BookShelf';
+import BooksGrid from '../components/BooksGrid';
+import Book from '../components/Book';
 
-import useBooks from './useBooks';
+import useBooks from '../useBooks';
+import { SHELVES } from '../constants';
 
 const MainPage = () => {
   const { books, handleShelfChange } = useBooks();
