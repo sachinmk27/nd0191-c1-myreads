@@ -14,7 +14,6 @@ const SearchPage = () => {
     try {
       if (searchInputRef.current.value) {
         const resp = await BooksAPI.search(searchInputRef.current.value, 10);
-        console.log(resp);
         if (resp.error) {
           throw new Error(resp.error);
         } else {

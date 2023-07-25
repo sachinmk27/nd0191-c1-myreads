@@ -3,10 +3,11 @@ import BookShelfSelect from './BookShelfSelect';
 
 const Book = ({ book, onShelfChange }) => {
   const { title, authors, imageLinks } = book;
+
   const handleShelfChange = (e) => {
-    console.log(book, e.target.value);
     onShelfChange(book, e.target.value);
   };
+
   return (
     <li>
       <div className="book">
