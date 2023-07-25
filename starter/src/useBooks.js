@@ -12,15 +12,14 @@ export default function useBooks() {
     getBooks();
   }, []);
 
-  const bookShelfMapping = books.reduce((acc, book) => {
-    const { shelf, id } = book;
-    acc[id] = shelf;
-    return acc;
-  }, {});
-
   const handleShelfChange = async (book, shelf) => {
     BooksAPI.update(book, shelf);
-    setBooks(
+    const oldBook = books.find((b) => b.id === book.id);
+    console.log(oldBook);
+    if (!oldBook) {
+      setBooks((books) => [...books, book]);
+    }
+    setBooks((books) =>
       books.map((b) => {
         if (b.id === book.id) {
           return { ...book, shelf };
@@ -29,6 +28,12 @@ export default function useBooks() {
       })
     );
   };
+
+  const bookShelfMapping = books.reduce((acc, book) => {
+    const { shelf, id } = book;
+    acc[id] = shelf;
+    return acc;
+  }, {});
 
   return { books, bookShelfMapping, handleShelfChange };
 }

@@ -10,8 +10,13 @@ import * as BooksAPI from '../BooksAPI';
 
 const SearchPage = () => {
   const [searchResults, setSearchResults] = useState([]);
-  const { bookShelfMapping, handleShelfChange } = useBooks();
+  const { handleShelfChange, bookShelfMapping } = useBooks();
   const searchInputRef = useRef(null);
+
+  const booksWithShelf = searchResults.map((book) => ({
+    ...book,
+    shelf: bookShelfMapping[book.id] || 'none',
+  }));
 
   const handleChange = async (e) => {
     try {
@@ -20,12 +25,7 @@ const SearchPage = () => {
         if (resp.error) {
           throw new Error(resp.error);
         } else {
-          setSearchResults(
-            resp.map((book) => ({
-              ...book,
-              shelf: bookShelfMapping[book.id] || 'none',
-            }))
-          );
+          setSearchResults(resp);
         }
       }
     } catch (err) {
@@ -50,7 +50,7 @@ const SearchPage = () => {
       </div>
       <div className="search-books-results">
         <BooksGrid>
-          {searchResults.map((book) => (
+          {booksWithShelf.map((book) => (
             <Book key={book.id} book={book} onShelfChange={handleShelfChange} />
           ))}
         </BooksGrid>
