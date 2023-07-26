@@ -5,7 +5,7 @@ const BookShelfSelect = ({ onChange, book, placeholderText }) => {
   return (
     <div className="book-shelf-changer">
       <select onChange={onChange} value={book.shelf}>
-        <option value="none" disabled>
+        <option value="" disabled>
           {`${placeholderText} ...`}
         </option>
         {Object.values(SHELVES).map((shelf) => (
