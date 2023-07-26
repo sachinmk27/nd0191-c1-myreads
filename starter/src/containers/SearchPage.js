@@ -27,6 +27,7 @@ const SearchPage = () => {
           abortRef.current.signal
         );
         if (resp.error) {
+          setSearchResults([]);
           throw new Error(resp.error);
         } else {
           setSearchResults(resp);
