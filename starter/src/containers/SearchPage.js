@@ -7,31 +7,44 @@ import BooksGrid from '../components/BooksGrid';
 import useBooks from '../useBooks';
 
 import * as BooksAPI from '../BooksAPI';
+import { debounce } from '../utils';
 
 const SearchPage = () => {
   const [searchResults, setSearchResults] = useState([]);
   const { handleShelfChange, bookShelfMapping } = useBooks();
-  const searchInputRef = useRef(null);
+  const abortRef = useRef(null);
+
+  const handleChange = async (e) => {
+    try {
+      if (abortRef.current) {
+        abortRef.current.abort();
+      }
+      abortRef.current = new AbortController();
+      if (e.target.value) {
+        const resp = await BooksAPI.search(
+          e.target.value,
+          10,
+          abortRef.current.signal
+        );
+        if (resp.error) {
+          throw new Error(resp.error);
+        } else {
+          setSearchResults(resp);
+        }
+      } else {
+        setSearchResults([]);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const booksWithShelf = searchResults.map((book) => ({
     ...book,
     shelf: bookShelfMapping[book.id] || 'none',
   }));
 
-  const handleChange = async (e) => {
-    try {
-      if (searchInputRef.current.value) {
-        const resp = await BooksAPI.search(searchInputRef.current.value, 10);
-        if (resp.error) {
-          throw new Error(resp.error);
-        } else {
-          setSearchResults(resp);
-        }
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  const debouncedHandleChange = debounce(handleChange);
 
   return (
     <div className="search-books">
@@ -41,8 +54,7 @@ const SearchPage = () => {
         </Link>
         <div className="search-books-input-wrapper">
           <input
-            ref={searchInputRef}
-            onChange={handleChange}
+            onChange={debouncedHandleChange}
             type="text"
             placeholder="Search by title, author, or ISBN"
           />
